@@ -4,7 +4,7 @@ services:
     container_name: cc-main
     restart: unless-stopped
     devices:
-      - ${MODULE_DEVICE}:/dev/ttyUSB0
+      - ${MODULE_DEVICE:-/dev/ttyUSB0}:/dev/ttyUSB0
     volumes:
       - raspi_data:/data
     env_file:

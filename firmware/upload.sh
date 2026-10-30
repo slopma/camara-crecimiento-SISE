@@ -1,10 +1,11 @@
 #!/bin/bash
 
 project=$1
+port=${2:-/dev/ttyUSB0}
 
 if [ -z "$project" ]; then
-    echo "Error: Unspecified project."
-    return 1
+    echo "Error: Unspecified project (e.g. ./upload.sh ModuloCrecimiento /dev/ttyUSB0)."
+    exit 1
 fi
 
-arduino-cli upload -p /dev/ttyUSB0 --fqbn esp32:esp32:esp32doit-devkit-v1 $project
+arduino-cli upload -p "$port" --fqbn esp32:esp32:esp32doit-devkit-v1 "$project"

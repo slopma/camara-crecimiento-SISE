@@ -30,13 +30,13 @@ architecture-beta
 
     group raspi[Raspberry Pi]
 
-    service python(server)[Python] in raspi
+    service gateway(server)[Go Gateway] in raspi
 
     junction video in raspi
 
-    nodered:R <--> L:python
+    nodered:R <--> L:gateway
     rtmpserver:R <-- L:video
-    video:B -- T:python
+    video:B -- T:gateway
 
     group module[Modules]
 
@@ -50,7 +50,7 @@ architecture-beta
 
     esp:T -- B:components
     camera:B -- T:components
-    components:L --> R:python
+    components:L --> R:gateway
     esp:R -- L:sensors
     esp:L -- R:actuators
 

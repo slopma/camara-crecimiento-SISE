@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"os"
 	"strings"
 	"time"
 
@@ -11,8 +12,19 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+func getEnv(key, defaultVal string) string {
+	if val := os.Getenv(key); val != "" {
+		return val
+	}
+	return defaultVal
+}
+
+func getTopicPrefix() string {
+	return getEnv("MQTT_TOPIC_PREFIX", "/sise/camara-crecimiento/m1")
+}
+
 func BuildTopic(path string) string {
-	return "/sise/camara-crecimiento/m1" + path
+	return getTopicPrefix() + path
 }
 
 func Publish(client mqtt.Client, topic string, payload string) error {
@@ -29,8 +41,9 @@ func Publish(client mqtt.Client, topic string, payload string) error {
 func HandleSetpointSubscribe(subStore *db.Store) func(mqtt.Client, mqtt.Message) {
 	return func(client mqtt.Client, msg mqtt.Message) {
 		var incoming map[string]any
-		err := json.Unmarshal([]byte(msg.Payload()), &incoming)
+		err := json.Unmarshal(msg.Payload(), &incoming)
 		if err != nil {
+			log.Warn().Err(err).Msg("Failed to unmarshal setpoints payload")
 			return
 		}
 
@@ -51,21 +64,28 @@ func HandleExperimentStart(subStore *db.Store) func(mqtt.Client, mqtt.Message) {
 		}
 
 		subStore.Apply(expData)
-		Running = true
+		running.Store(true)
+		log.Info().Str("experiment", experimentName).Msg("Experiment started")
 	}
 }
 
 func StartMqttClient(pubQueue *queue.Queue, subStore *db.Store) error {
+	broker := getEnv("MQTT_BROKER", "tcp://mqtt.dis.eafit.edu.co:1883")
+	clientID := getEnv("MQTT_CLIENT_ID", "sise-camara-crecimiento-modulo1")
+	user := getEnv("MQTT_USER", "admin")
+	pass := getEnv("MQTT_PASSWORD", "semillero")
+
 	opt := mqtt.NewClientOptions().
-		AddBroker("tcp://mqtt.dis.eafit.edu.co:1883").
-		SetClientID("sise-camara-crecimiento-modulo1").
-		SetUsername("admin").
-		SetPassword("semillero").
+		AddBroker(broker).
+		SetClientID(clientID).
+		SetUsername(user).
+		SetPassword(pass).
 		SetConnectTimeout(5 * time.Second).
 		SetKeepAlive(10 * time.Second).
 		SetPingTimeout(3 * time.Second).
 		SetAutoReconnect(false)
 
+	log.Info().Str("broker", broker).Str("clientID", clientID).Msg("Connecting to MQTT broker")
 	client := mqtt.NewClient(opt)
 	token := client.Connect()
 	token.Wait()
@@ -73,6 +93,7 @@ func StartMqttClient(pubQueue *queue.Queue, subStore *db.Store) error {
 	if err != nil {
 		return err
 	}
+	log.Info().Msg("Connected to MQTT broker")
 
 	callback := HandleSetpointSubscribe(subStore)
 	token = client.Subscribe(BuildTopic("/sp"), 0, callback)
@@ -91,7 +112,9 @@ func StartMqttClient(pubQueue *queue.Queue, subStore *db.Store) error {
 	}
 
 	token = client.Subscribe(BuildTopic("/stop"), 0, func(c mqtt.Client, m mqtt.Message) {
-		Running = false
+		running.Store(false)
+		subStore.Apply(map[string]any{"running": 0})
+		log.Info().Msg("Experiment stopped")
 	})
 	token.Wait()
 	err = token.Error()
@@ -108,7 +131,7 @@ func StartMqttClient(pubQueue *queue.Queue, subStore *db.Store) error {
 			continue
 		}
 
-		log.Info().Str("json", string(payload)).Msg("Uploading")
+		log.Info().Str("json", payload).Msg("Uploading telemetry")
 		err := Publish(client, BuildTopic("/data"), payload)
 		if err != nil {
 			return err
@@ -130,3 +153,4 @@ func MqttLoop(pubQueue *queue.Queue, subStore *db.Store) {
 		}
 	}
 }
+

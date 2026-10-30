@@ -134,9 +134,10 @@ struct DatosSuelo {
 DatosSuelo suelo[8];   // suelo[0] sin uso | suelo[1..6] plantas | suelo[7] = tanque
 
 uint16_t modbusBuffer[NUM_REGISTROS];
-int sensorActual   = 1;   // sensor Modbus que se está leyendo ahora
-bool modbusLeyendo = false;
-bool uvDisponible = false;
+int sensorActual      = 1;   // siguiente sensor Modbus a consultar
+int sensorConsultado  = 1;   // sensor Modbus cuya respuesta se espera
+bool modbusLeyendo    = false;
+bool uvDisponible     = false;
 
 // ======================================================
 // VARIABLES - ACTUADORES
@@ -189,13 +190,19 @@ void IRAM_ATTR pwmInterrupt() {
 // ======================================================
 
 void leerDHT() {
-  temp1 = dht1.readTemperature();
-  hum1  = dht1.readHumidity();
-  temp2 = dht2.readTemperature();
-  hum2  = dht2.readHumidity();
+  float t1 = dht1.readTemperature();
+  float h1 = dht1.readHumidity();
+  float t2 = dht2.readTemperature();
+  float h2 = dht2.readHumidity();
 
-  if (isnan(temp1) || isnan(hum1)) { temp1 = 0; hum1 = 0; }
-  if (isnan(temp2) || isnan(hum2)) { temp2 = 0; hum2 = 0; }
+  if (!isnan(t1) && !isnan(h1)) {
+    temp1 = t1;
+    hum1  = h1;
+  }
+  if (!isnan(t2) && !isnan(h2)) {
+    temp2 = t2;
+    hum2  = h2;
+  }
 }
 
 void leerUV() {
@@ -249,16 +256,18 @@ bool onModbusRead(Modbus::ResultCode event, uint16_t transactionId, void* data) 
   modbusLeyendo = false;
 
   if (event == Modbus::EX_SUCCESS) {
-    int idx = sensorActual;               // 1..6 = suelo | 7 = tanque
-    suelo[idx].humedad      = modbusBuffer[0] / 10.0;
-    suelo[idx].temperatura  = modbusBuffer[1] / 10.0;
-    suelo[idx].conductividad = modbusBuffer[2];
-    suelo[idx].ph           = modbusBuffer[3] / 10.0;
-    suelo[idx].nitrogeno    = modbusBuffer[4];
-    suelo[idx].fosforo      = modbusBuffer[5];
-    suelo[idx].potasio      = modbusBuffer[6];
+    int idx = sensorConsultado;               // 1..6 = suelo | 7 = tanque
+    if (idx >= 1 && idx <= 7) {
+      suelo[idx].humedad       = modbusBuffer[0] / 10.0;
+      suelo[idx].temperatura   = modbusBuffer[1] / 10.0;
+      suelo[idx].conductividad = modbusBuffer[2];
+      suelo[idx].ph            = modbusBuffer[3] / 10.0;
+      suelo[idx].nitrogeno     = modbusBuffer[4];
+      suelo[idx].fosforo       = modbusBuffer[5];
+      suelo[idx].potasio       = modbusBuffer[6];
+    }
   }
-  // Si falla, se conservan los últimos valores válidos
+  // Si falla o timeout, se conservan los ultimos valores validos
 
   return true;
 }
@@ -274,9 +283,10 @@ void tareaModbus() {
   if (modbusLeyendo) return;   // Esperar que termine la lectura actual
   if (mb.slave())    return;   // Bus ocupado
 
+  sensorConsultado = sensorActual;
   // Iniciar lectura del sensor actual
   bool ok = mb.readHreg(
-    sensorActual,
+    sensorConsultado,
     REG_INICIO,
     modbusBuffer,
     NUM_REGISTROS,
@@ -332,43 +342,57 @@ void setLEDs(int r, int g, int b, int uv) {
 void aplicarControl() {
   if (!sistemaActivo) return;
 
-  // --- Temperatura (promedio de ambos DHT22) ---
-  float tempProm = (temp1 + temp2) / 2.0;
+  // --- Temperatura (promedio seguro de sensores DHT22 validos) ---
+  float tempProm = 0;
+  int countTemp = 0;
+  if (temp1 > 0) { tempProm += temp1; countTemp++; }
+  if (temp2 > 0) { tempProm += temp2; countTemp++; }
+  if (countTemp > 0) tempProm /= countTemp;
 
-  if (tempProm > temp_max) {
+  if (temp_max > 0 && tempProm > temp_max) {
     setVent1(true);
     setVent2(true);
     setResistencia(false);
-  } else if (tempProm < temp_min) {
+  } else if (temp_min > 0 && tempProm > 0 && tempProm < temp_min) {
     setResistencia(true);
     setVent1(false);
     setVent2(false);
   } else {
     // Temperatura dentro de rango
-    // Solo apagar resistencia si estaba encendida
     if (estadoResistencia) setResistencia(false);
   }
 
-  // --- Humedad aire (promedio de ambos DHT22) ---
-  float humProm = (hum1 + hum2) / 2.0;
+  // --- Humedad aire (promedio seguro de sensores DHT22 validos) ---
+  float humProm = 0;
+  int countHum = 0;
+  if (hum1 > 0) { humProm += hum1; countHum++; }
+  if (hum2 > 0) { humProm += hum2; countHum++; }
+  if (countHum > 0) humProm /= countHum;
 
-  if (humProm < hum_min || humProm > hum_max) {
-    // Ventilar para corregir humedad (fuera de rango en cualquier dirección)
+  if ((hum_min > 0 && humProm > 0 && humProm < hum_min) || (hum_max > 0 && humProm > hum_max)) {
+    // Ventilar para corregir humedad fuera de rango
     setVent1(true);
     setVent2(true);
   }
-  // Nota: si la temperatura ya encendió los ventiladores, esto no los apaga
 
-  // --- Humedad suelo (promedio de los 6 sensores de planta S1..S6) ---
+  // --- Humedad suelo (promedio seguro de sensores activos S1..S6) ---
   float sumHumSuelo = 0;
+  int countHumSuelo = 0;
   for (int i = 1; i <= NUM_SENSORES; i++) {
-    sumHumSuelo += suelo[i].humedad;
+    if (suelo[i].humedad > 0) {
+      sumHumSuelo += suelo[i].humedad;
+      countHumSuelo++;
+    }
   }
-  float humSueloProm = sumHumSuelo / NUM_SENSORES;
+  float humSueloProm = (countHumSuelo > 0) ? (sumHumSuelo / countHumSuelo) : 0;
 
-  if (humSueloProm < hum_suelo_min) {
-    setBomba(true);
-  } else if (humSueloProm >= hum_suelo_max) {
+  if (hum_suelo_min > 0 && humSueloProm > 0) {
+    if (humSueloProm < hum_suelo_min) {
+      setBomba(true);
+    } else if (humSueloProm >= hum_suelo_max) {
+      setBomba(false);
+    }
+  } else {
     setBomba(false);
   }
 

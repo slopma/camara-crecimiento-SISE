@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"maps"
 	"os"
+	"sync/atomic"
 	"time"
-	"unsafe"
 
 	"github.com/eggseal/camara-crecimiento/raspberry-pi/src/db"
 	"github.com/eggseal/camara-crecimiento/raspberry-pi/src/queue"
@@ -13,7 +13,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var Running = false
+var running atomic.Bool
 
 func main() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout})
@@ -57,9 +57,13 @@ func main() {
 			continue
 		}
 
-		time := GetInternetTime()
-		tmp["timestamp"] = time.UnixMilli()
-		tmp["running"] = int(*(*byte)(unsafe.Pointer(&Running)))
+		timeNow := GetInternetTime()
+		tmp["timestamp"] = timeNow.UnixMilli()
+		if running.Load() {
+			tmp["running"] = 1
+		} else {
+			tmp["running"] = 0
+		}
 		maps.Copy(tmp, subStore.Snapshot())
 
 		timedLine, err := json.Marshal(tmp)
@@ -73,3 +77,4 @@ func main() {
 		}
 	}
 }
+
