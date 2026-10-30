@@ -1,14 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUXDB",
-      "label": "InfluxDB",
-      "description": "Selecciona la fuente de datos InfluxDB ya configurada en tu Grafana",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
   "annotations": {
     "list": []
   },
@@ -27,7 +17,7 @@
       "type": "row"
     },
     {
-      "datasource": "${DS_INFLUXDB}",
+      "datasource": { "type": "influxdb", "uid": "$datasource" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -45,10 +35,10 @@
       "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "auto" },
       "title": "Estado del Cultivo",
       "type": "stat",
-      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"running\") |> last()" }]
+      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"running\") |> last()" }]
     },
     {
-      "datasource": "${DS_INFLUXDB}",
+      "datasource": { "type": "influxdb", "uid": "$datasource" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -66,10 +56,10 @@
       "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "auto" },
       "title": "Fotoperiodo Activo",
       "type": "stat",
-      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"profile\") |> last()" }]
+      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"profile\") |> last()" }]
     },
     {
-      "datasource": "${DS_INFLUXDB}",
+      "datasource": { "type": "influxdb", "uid": "$datasource" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -89,10 +79,10 @@
       "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
       "title": "Nivel Tanque de Riego",
       "type": "stat",
-      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"nivel_tanque\") |> last()" }]
+      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"nivel_tanque\") |> last()" }]
     },
     {
-      "datasource": "${DS_INFLUXDB}",
+      "datasource": { "type": "influxdb", "uid": "$datasource" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -107,7 +97,7 @@
       "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "auto" },
       "title": "Estado Bomba",
       "type": "stat",
-      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"bomba\") |> last()" }]
+      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"bomba\") |> last()" }]
     },
     {
       "collapsed": false,
@@ -117,7 +107,7 @@
       "type": "row"
     },
     {
-      "datasource": "${DS_INFLUXDB}",
+      "datasource": { "type": "influxdb", "uid": "$datasource" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -140,10 +130,10 @@
       "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
       "title": "Temperatura Ambiente Promedio",
       "type": "gauge",
-      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"temp1\" or r._field == \"temp2\")) |> mean()" }]
+      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"temp1\" or r._field == \"temp2\")) |> mean()" }]
     },
     {
-      "datasource": "${DS_INFLUXDB}",
+      "datasource": { "type": "influxdb", "uid": "$datasource" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -167,10 +157,10 @@
       "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
       "title": "Humedad Relativa Aire",
       "type": "gauge",
-      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"hum1\" or r._field == \"hum2\")) |> mean()" }]
+      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"hum1\" or r._field == \"hum2\")) |> mean()" }]
     },
     {
-      "datasource": "${DS_INFLUXDB}",
+      "datasource": { "type": "influxdb", "uid": "$datasource" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -201,10 +191,10 @@
       "title": "☀️ Radiación Fotosintética Activa (PAR / PPFD)",
       "type": "gauge",
       "description": "Flujo de fotones fotosintéticamente activos (400-700nm) para optimizar absorción clorofílica.",
-      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"par\") |> last()" }]
+      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"par\") |> last()" }]
     },
     {
-      "datasource": "${DS_INFLUXDB}",
+      "datasource": { "type": "influxdb", "uid": "$datasource" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -227,7 +217,7 @@
       "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
       "title": "Dióxido de Carbono (CO₂)",
       "type": "gauge",
-      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"co2\") |> last()" }]
+      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"co2\") |> last()" }]
     },
     {
       "collapsed": false,
@@ -237,7 +227,7 @@
       "type": "row"
     },
     {
-      "datasource": "${DS_INFLUXDB}",
+      "datasource": { "type": "influxdb", "uid": "$datasource" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
@@ -250,10 +240,10 @@
       "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
       "title": "Humedad en Sustrato (Plantas S1 - S6)",
       "type": "timeseries",
-      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field =~ /hum_suelo[1-6]/)" }]
+      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field =~ /hum_suelo[1-6]/)" }]
     },
     {
-      "datasource": "${DS_INFLUXDB}",
+      "datasource": { "type": "influxdb", "uid": "$datasource" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
@@ -266,7 +256,7 @@
       "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
       "title": "Conductividad Eléctrica (EC) y pH",
       "type": "timeseries",
-      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field =~ /ec_suelo[1-6]/ or r._field =~ /ph_suelo[1-6]/))" }]
+      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field =~ /ec_suelo[1-6]/ or r._field =~ /ph_suelo[1-6]/))" }]
     },
     {
       "collapsed": false,
@@ -306,6 +296,42 @@
   "refresh": "5s",
   "schemaVersion": 39,
   "tags": ["sise", "camara-crecimiento", "iot", "biotecnologia"],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Fuente de Datos",
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "influxdb",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "telemetry",
+          "value": "telemetry"
+        },
+        "hide": 0,
+        "label": "Bucket",
+        "name": "bucket",
+        "options": [
+          { "selected": true, "text": "telemetry", "value": "telemetry" },
+          { "selected": false, "text": "sise", "value": "sise" },
+          { "selected": false, "text": "sensors", "value": "sensors" },
+          { "selected": false, "text": "camara", "value": "camara" }
+        ],
+        "query": "telemetry,sise,sensors,camara",
+        "type": "custom"
+      }
+    ]
+  },
   "time": { "from": "now-3h", "to": "now" },
   "timepicker": { "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"] },
   "timezone": "browser",
