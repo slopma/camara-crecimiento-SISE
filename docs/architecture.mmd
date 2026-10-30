@@ -1,0 +1,50 @@
+architecture-beta
+
+    service user(internet)[User]
+    
+    group vm[Virtual Machine]
+
+    service grafana(server)[Grafana] in vm
+    service nodered(server)[NodeRed] in vm
+    service influx(database)[InfluxDB] in vm
+    service postgres(database)[PostgreSQL] in vm
+
+    group nginx[Nginx] in vm
+    service rtmpserver(server)[RTMP Server] in nginx
+    service httpserver(server)[HTTP Server] in nginx
+
+    junction data in vm
+
+    user:R <--> L:grafana
+    grafana:R <--> L:nodered
+    grafana:T <-- B:httpserver
+    nodered:B <-- T:data
+    data:L --> R:influx
+    data:B --> T:postgres
+    httpserver:R <-- L:rtmpserver
+
+    group raspi[Raspberry Pi]
+
+    service python(server)[Python] in raspi
+
+    junction video in raspi
+
+    nodered:R <--> L:python
+    rtmpserver:R <-- L:video
+    video:B -- T:python
+
+    group module[Modules]
+
+    service camera[RGB Camera] in module
+    service sensors[Sensors] in module
+    service actuators[Actuators] in module
+    service esp(server)[ESP32] in module
+
+    junction components in module
+
+
+    esp:T -- B:components
+    camera:B -- T:components
+    components:L --> R:python
+    esp:R -- L:sensors
+    esp:L -- R:actuators

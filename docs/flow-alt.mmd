@@ -1,0 +1,28 @@
+flowchart LR
+
+subgraph MQTT["MQTT Event Handler"]
+    ReceiveMQTT[Receive data from MQTT server]
+    BroadcastESP[Send to all ESP32]
+
+    ReceiveMQTT --> BroadcastESP
+end
+
+subgraph Stream["Camera Stream"]
+    Camera[Read RGB Camera]
+    RTMP[Send to RTMP server]
+
+    Camera --> RTMP --> Camera
+end
+
+subgraph Reconnect["On Internet Reconnect"]
+    ReconnectCheck[Ping Google]
+    DetectReconnect{Connection restored?}
+
+    FlushSQLite[Send all stored SQLite data]
+    FlushImages[Send all stored images]
+
+    ReconnectCheck --> DetectReconnect
+    DetectReconnect -- Yes --> FlushSQLite
+    DetectReconnect -- No --> ReconnectCheck
+    FlushSQLite --> FlushImages
+end

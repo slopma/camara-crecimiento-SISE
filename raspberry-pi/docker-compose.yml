@@ -1,0 +1,14 @@
+services:
+  main:
+    build: .
+    container_name: cc-main
+    restart: unless-stopped
+    devices:
+      - ${MODULE_DEVICE}:/dev/ttyUSB0
+    volumes:
+      - raspi_data:/data
+    env_file:
+      - .env
+
+volumes:
+  raspi_data:

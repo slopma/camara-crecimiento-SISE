@@ -1,0 +1,33 @@
+flowchart TB
+
+subgraph SerialLoop["Serial Ingestion Loop"]
+    ReadPorts[Read all serial ports]
+    ReceiveJSON[Receive JSON from ESP32]
+    AddTimestamp[Add timestamp]
+
+    CheckInternet{Internet available?}
+
+    StoreSQLite[Store data in SQLite]
+    SendMQTT[Send data to MQTT server]
+
+    ReadPorts --> ReceiveJSON --> AddTimestamp --> CheckInternet
+
+    CheckInternet -- Yes --> SendMQTT
+    CheckInternet -- No --> StoreSQLite
+end
+
+subgraph Snapshot["Snapshot on Data + Interval"]
+    Interval{Time to capture image?}
+    CaptureFrame[Capture frame]
+
+    CheckInternetImg{Internet available?}
+    StoreImage[Store image locally]
+    SendHTTP[Send image to Node-RED]
+
+    Interval -- Yes --> CaptureFrame --> CheckInternetImg
+
+    CheckInternetImg -- Yes --> SendHTTP
+    CheckInternetImg -- No --> StoreImage
+end
+
+AddTimestamp --> Interval

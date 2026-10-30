@@ -1,0 +1,55 @@
+services:
+  node-red:
+    image: nodered/node-red:latest
+    container_name: node-red
+    ports:
+      - ${NODE_RED_PORT}:1880
+    restart: unless-stopped
+    volumes:
+      - ${NODE_RED_VOLUME}:/data
+    env_file:
+      - .env
+
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    user: '0'
+    ports:
+      - ${GF_PORT}:3000
+    restart: unless-stopped
+    volumes:
+      - ${GF_VOLUME}:/var/lib/grafana
+    env_file:
+      - .env
+
+  influxdb:
+    image: influxdb:2
+    container_name: influxdb
+    ports:
+      - ${DOCKER_INFLUXDB_PORT}:8086
+    restart: unless-stopped
+    volumes:
+      - ${DOCKER_INFLUXDB_VOLUME}:/var/lib/influxdb2:rw
+    env_file:
+      - .env
+
+  stream:
+    build: ./stream
+    container_name: stream
+    ports:
+      - ${STREAM_HTTP_PORT}:80
+      - ${STREAM_RTMP_PORT}:1935
+    restart: unless-stopped
+    env_file:
+      - .env
+
+  database:
+    image: bitnami/postgresql
+    container_name: postgresql
+    ports:
+      - ${POSTGRESQL_PORT}:5432
+    restart: unless-stopped
+    volumes:
+      - ${POSTGRESQL_VOLUME}:/bitnami/postgresql:rw
+    env_file:
+      - .env
