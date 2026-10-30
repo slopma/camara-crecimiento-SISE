@@ -315,20 +315,29 @@
       {
         "current": {
           "selected": true,
-          "text": "telemetry",
-          "value": "telemetry"
+          "text": "camara-crecimiento",
+          "value": "camara-crecimiento"
         },
+        "datasource": { "type": "influxdb", "uid": "$datasource" },
+        "definition": "buckets() |> filter(fn: (r) => not (r.name =~ /^_/)) |> keep(columns: [\"name\"]) |> rename(columns: {name: \"_value\"})",
         "hide": 0,
+        "includeAll": false,
         "label": "Bucket",
+        "multi": false,
         "name": "bucket",
         "options": [
-          { "selected": true, "text": "telemetry", "value": "telemetry" },
-          { "selected": false, "text": "sise", "value": "sise" },
-          { "selected": false, "text": "sensors", "value": "sensors" },
-          { "selected": false, "text": "camara", "value": "camara" }
+          {
+            "selected": true,
+            "text": "camara-crecimiento",
+            "value": "camara-crecimiento"
+          }
         ],
-        "query": "telemetry,sise,sensors,camara",
-        "type": "custom"
+        "query": "buckets() |> filter(fn: (r) => not (r.name =~ /^_/)) |> keep(columns: [\"name\"]) |> rename(columns: {name: \"_value\"})",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
