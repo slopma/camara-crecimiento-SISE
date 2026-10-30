@@ -1,4 +1,14 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_INFLUXDB",
+      "label": "InfluxDB",
+      "description": "Selecciona la fuente de datos InfluxDB ya configurada en tu Grafana",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
   "annotations": {
     "list": []
   },
@@ -17,7 +27,7 @@
       "type": "row"
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "datasource": "${DS_INFLUXDB}",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -38,7 +48,7 @@
       "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"running\") |> last()" }]
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "datasource": "${DS_INFLUXDB}",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -59,7 +69,7 @@
       "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"profile\") |> last()" }]
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "datasource": "${DS_INFLUXDB}",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -82,7 +92,7 @@
       "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"nivel_tanque\") |> last()" }]
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "datasource": "${DS_INFLUXDB}",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -107,7 +117,7 @@
       "type": "row"
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "datasource": "${DS_INFLUXDB}",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -133,7 +143,7 @@
       "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"temp1\" or r._field == \"temp2\")) |> mean()" }]
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "datasource": "${DS_INFLUXDB}",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -160,7 +170,7 @@
       "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"hum1\" or r._field == \"hum2\")) |> mean()" }]
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "datasource": "${DS_INFLUXDB}",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -194,7 +204,7 @@
       "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"par\") |> last()" }]
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "datasource": "${DS_INFLUXDB}",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "thresholds" },
@@ -227,7 +237,7 @@
       "type": "row"
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "datasource": "${DS_INFLUXDB}",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
@@ -243,7 +253,7 @@
       "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field =~ /hum_suelo[1-6]/)" }]
     },
     {
-      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "datasource": "${DS_INFLUXDB}",
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
