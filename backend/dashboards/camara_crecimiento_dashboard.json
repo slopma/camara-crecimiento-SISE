@@ -1,0 +1,287 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "⚡ ESTADO GENERAL DEL SISTEMA Y ALERTAS",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [
+            { "options": { "0": { "color": "dark-red", "text": "DETENIDO" }, "1": { "color": "green", "text": "EN MARCHA" } }, "type": "value" }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "red", "value": null }, { "color": "green", "value": 1 }]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
+      "id": 1,
+      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "auto" },
+      "title": "Estado del Cultivo",
+      "type": "stat",
+      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"running\") |> last()" }]
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [
+            { "options": { "1": { "color": "yellow", "text": "MAÑANA (P1)" }, "2": { "color": "orange", "text": "TARDE (P2)" }, "3": { "color": "blue", "text": "NOCHE (P3)" } }, "type": "value" }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "blue", "value": null }]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
+      "id": 2,
+      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "auto" },
+      "title": "Fotoperiodo Activo",
+      "type": "stat",
+      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"profile\") |> last()" }]
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "unit": "cm",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 5 },
+              { "color": "green", "value": 15 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
+      "id": 3,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
+      "title": "Nivel Tanque de Riego",
+      "type": "stat",
+      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"nivel_tanque\") |> last()" }]
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [
+            { "options": { "0": { "color": "semi-dark-blue", "text": "APAGADA" }, "1": { "color": "green", "text": "REGANDO" } }, "type": "value" }
+          ],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }, { "color": "green", "value": 1 }] }
+        }
+      },
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 },
+      "id": 4,
+      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "auto" },
+      "title": "Estado Bomba",
+      "type": "stat",
+      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"bomba\") |> last()" }]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "id": 101,
+      "title": "🌿 AMBIENTE AÉREO Y RADIACIÓN FOTOSINTÉTICA (PAR)",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "max": 50,
+          "min": 0,
+          "unit": "celsius",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "blue", "value": null },
+              { "color": "green", "value": 18 },
+              { "color": "yellow", "value": 26 },
+              { "color": "red", "value": 32 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 6 },
+      "id": 5,
+      "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
+      "title": "Temperatura Ambiente Promedio",
+      "type": "gauge",
+      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"temp1\" or r._field == \"temp2\")) |> mean()" }]
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "max": 100,
+          "min": 0,
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 40 },
+              { "color": "green", "value": 55 },
+              { "color": "yellow", "value": 75 },
+              { "color": "red", "value": 85 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 6 },
+      "id": 6,
+      "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
+      "title": "Humedad Relativa Aire",
+      "type": "gauge",
+      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"hum1\" or r._field == \"hum2\")) |> mean()" }]
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "custom": { "thresholdsStyle": { "mode": "area" } },
+          "max": 1500,
+          "min": 0,
+          "unit": "µmol/m²s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "blue", "value": null },
+              { "color": "yellow", "value": 150 },
+              { "color": "green", "value": 350 },
+              { "color": "orange", "value": 700 },
+              { "color": "red", "value": 1000 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 6 },
+      "id": 7,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true
+      },
+      "title": "☀️ Radiación Fotosintética Activa (PAR / PPFD)",
+      "type": "gauge",
+      "description": "Flujo de fotones fotosintéticamente activos (400-700nm) para optimizar absorción clorofílica.",
+      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"par\") |> last()" }]
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "max": 2000,
+          "min": 0,
+          "unit": "ppm",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "yellow", "value": null },
+              { "color": "green", "value": 400 },
+              { "color": "orange", "value": 1000 },
+              { "color": "red", "value": 1500 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 7, "w": 6, "x": 18, "y": 6 },
+      "id": 8,
+      "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
+      "title": "Dióxido de Carbono (CO₂)",
+      "type": "gauge",
+      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"co2\") |> last()" }]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 13 },
+      "id": 102,
+      "title": "🌱 SUELO, SUSTRATO Y NUTRIENTES (SENSORES S1 - S6)",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "axisCenteredZero": false, "axisColorMode": "text", "drawStyle": "line", "lineInterpolation": "smooth" },
+          "unit": "percent"
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 14 },
+      "id": 9,
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "title": "Humedad en Sustrato (Plantas S1 - S6)",
+      "type": "timeseries",
+      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field =~ /hum_suelo[1-6]/)" }]
+    },
+    {
+      "datasource": { "type": "influxdb", "uid": "influxdb" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "axisCenteredZero": false, "drawStyle": "line", "lineInterpolation": "smooth" },
+          "unit": "µS/cm"
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 14 },
+      "id": 10,
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "title": "Conductividad Eléctrica (EC) y pH",
+      "type": "timeseries",
+      "targets": [{ "query": "from(bucket: \"telemetry\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field =~ /ec_suelo[1-6]/ or r._field =~ /ph_suelo[1-6]/))" }]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 21 },
+      "id": 103,
+      "title": "📹 CÁMARA Y VIDEO EN TIEMPO REAL (RTMP / HLS)",
+      "type": "row"
+    },
+    {
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 22 },
+      "id": 11,
+      "options": {
+        "content": "<div style=\"width:100%; height:100%; min-height:450px; background:#0d1117; border-radius:12px; border:1px solid #30363d; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center;\">\n  <div style=\"width:100%; padding:10px 16px; background:#161b22; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #30363d;\">\n    <span style=\"color:#58a6ff; font-weight:600; font-size:14px;\">🔴 Transmisión en Vivo - Módulo 1</span>\n    <span style=\"color:#8b949e; font-size:12px;\">Formato HLS Ultra Low Latency (RTMP Ingest)</span>\n  </div>\n  <iframe src=\"http://localhost:8080/?token=m1\" style=\"width:100%; height:450px; border:none;\" allow=\"autoplay; fullscreen\"></iframe>\n</div>",
+        "mode": "html"
+      },
+      "title": "Streaming de Cámara RGB",
+      "type": "text"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": ["sise", "camara-crecimiento", "iot", "biotecnologia"],
+  "time": { "from": "now-3h", "to": "now" },
+  "timepicker": { "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"] },
+  "timezone": "browser",
+  "title": "Cámara de Crecimiento SISE - Monitoreo & Control",
+  "uid": "sise-camara-crecimiento"
+}

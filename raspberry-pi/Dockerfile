@@ -1,21 +1,13 @@
-FROM golang:1.26-alpine AS builder
+FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
+ENV PYTHONUNBUFFERED=1
 
-RUN go mod download
+COPY requirements.txt .
 
-COPY . .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o gateway ./src
+COPY src/ ./src/
 
-FROM alpine:3.21
-
-RUN apk add --no-cache ca-certificates
-
-WORKDIR /app
-
-COPY --from=builder /app/gateway .
-
-CMD ["./gateway"]
+CMD ["python", "-m", "src.main"]

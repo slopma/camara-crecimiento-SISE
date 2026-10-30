@@ -30,7 +30,7 @@ architecture-beta
 
     group raspi[Raspberry Pi]
 
-    service gateway(server)[Go Gateway] in raspi
+    service gateway(server)[Python Gateway] in raspi
 
     junction video in raspi
 

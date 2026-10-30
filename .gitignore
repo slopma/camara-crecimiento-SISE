@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.venv/
+env/
+venv/
+
+# Environment files
+.env
+!.env.example
+
+# Temporary / OS files
+*.tmp
+.DS_Store
+
+# Data directories (local Docker mounts)
+backend/data/
+raspberry-pi/data/
