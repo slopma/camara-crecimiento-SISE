@@ -27,31 +27,32 @@ echo "Resolución   : ${WIDTH}x${HEIGHT} @ ${FPS}fps"
 echo "Bitrate      : $BITRATE"
 echo "=================================================="
 
+# Verificar si hay cámara CSI conectada
+HAS_CSI=false
+if command -v rpicam-hello &> /dev/null; then
+    if rpicam-hello --list-cameras 2>&1 | grep -q 'Available cameras'; then
+        HAS_CSI=true
+    fi
+fi
+
 while true; do
-    if command -v rpicam-vid &> /dev/null; then
+    if [ "$HAS_CSI" = true ] && command -v rpicam-vid &> /dev/null; then
         echo "[INFO] Usando rpicam-vid (CSI Camera)..."
         rpicam-vid -t 0 --width "$WIDTH" --height "$HEIGHT" --framerate "$FPS" \
             --codec h264 --inline --profile high -o - | \
             ffmpeg -re -f h264 -i - \
             -c:v copy -an \
             -f flv "$RTMP_URL"
-    elif command -v libcamera-vid &> /dev/null; then
-        echo "[INFO] Usando libcamera-vid (CSI Camera)..."
-        libcamera-vid -t 0 --width "$WIDTH" --height "$HEIGHT" --framerate "$FPS" \
-            --codec h264 --inline --profile high -o - | \
-            ffmpeg -re -f h264 -i - \
-            -c:v copy -an \
-            -f flv "$RTMP_URL"
-    elif command -v ffmpeg &> /dev/null; then
-        echo "[INFO] Usando ffmpeg con V4L2 USB ($VIDEO_DEVICE)..."
-        ffmpeg -f v4l2 -framerate "$FPS" -video_size "${WIDTH}x${HEIGHT}" -i "$VIDEO_DEVICE" \
+    elif [ -e "$VIDEO_DEVICE" ] && command -v ffmpeg &> /dev/null; then
+        echo "[INFO] Usando ffmpeg con cámara USB ($VIDEO_DEVICE) en Ultra Low Latency..."
+        ffmpeg -f v4l2 -input_format mjpeg -framerate "$FPS" -video_size "${WIDTH}x${HEIGHT}" -i "$VIDEO_DEVICE" \
             -c:v libx264 -preset ultrafast -tune zerolatency -b:v "$BITRATE" \
-            -maxrate "$BITRATE" -bufsize "$BITRATE" -pix_fmt yuv420p -g "$((FPS * 2))" \
-            -an -f flv "$RTMP_URL"
+            -maxrate "$BITRATE" -bufsize "$((BITRATE / 2))" -pix_fmt yuv420p \
+            -g "$FPS" -keyint_min "$FPS" -sc_threshold 0 \
+            -flush_packets 1 -an -f flv "$RTMP_URL"
     else
-        echo "[ERROR] No se encontró ffmpeg, rpicam-vid ni libcamera-vid instalados."
-        echo "Instala ffmpeg con: sudo apt install -y ffmpeg"
-        sleep 10
+        echo "[ERROR] No se detectó cámara CSI ni dispositivo USB en $VIDEO_DEVICE."
+        sleep 5
         continue
     fi
 

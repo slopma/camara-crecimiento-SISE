@@ -11,295 +11,688 @@
   "panels": [
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
       "id": 100,
-      "title": "⚡ ESTADO GENERAL DEL SISTEMA Y ALERTAS",
+      "title": "ESTADO GENERAL DEL SISTEMA Y ALERTAS",
       "type": "row"
     },
     {
-      "datasource": { "type": "influxdb", "uid": "$datasource" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "thresholds" },
-          "mappings": [
-            { "options": { "0": { "color": "dark-red", "text": "DETENIDO" }, "1": { "color": "green", "text": "EN MARCHA" } }, "type": "value" }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "red", "value": null }, { "color": "green", "value": 1 }]
-          }
-        }
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ag4lg3qkktdz4b"
       },
-      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
-      "id": 1,
-      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "auto" },
-      "title": "Estado del Cultivo",
-      "type": "stat",
-      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"running\") |> last()" }]
-    },
-    {
-      "datasource": { "type": "influxdb", "uid": "$datasource" },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [
-            { "options": { "1": { "color": "yellow", "text": "MAÑANA (P1)" }, "2": { "color": "orange", "text": "TARDE (P2)" }, "3": { "color": "blue", "text": "NOCHE (P3)" } }, "type": "value" }
+            {
+              "options": {
+                "0": {
+                  "color": "dark-red",
+                  "text": "DETENIDO"
+                },
+                "1": {
+                  "color": "green",
+                  "text": "EN MARCHA"
+                }
+              },
+              "type": "value"
+            }
           ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "blue", "value": null }]
-          }
-        }
-      },
-      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
-      "id": 2,
-      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "auto" },
-      "title": "Fotoperiodo Activo",
-      "type": "stat",
-      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"profile\") |> last()" }]
-    },
-    {
-      "datasource": { "type": "influxdb", "uid": "$datasource" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "thresholds" },
-          "unit": "cm",
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "red", "value": null },
-              { "color": "orange", "value": 5 },
-              { "color": "green", "value": 15 }
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
             ]
           }
         }
       },
-      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
-      "id": 3,
-      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
-      "title": "Nivel Tanque de Riego",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "auto"
+      },
+      "title": "Estado del Cultivo",
       "type": "stat",
-      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"nivel_tanque\") |> last()" }]
+      "targets": [
+        {
+          "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"running\") |> last()"
+        }
+      ]
     },
     {
-      "datasource": { "type": "influxdb", "uid": "$datasource" },
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ag4lg3qkktdz4b"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [
-            { "options": { "0": { "color": "semi-dark-blue", "text": "APAGADA" }, "1": { "color": "green", "text": "REGANDO" } }, "type": "value" }
+            {
+              "options": {
+                "1": {
+                  "color": "yellow",
+                  "text": "MA\u00d1ANA (P1)"
+                },
+                "2": {
+                  "color": "orange",
+                  "text": "TARDE (P2)"
+                },
+                "3": {
+                  "color": "blue",
+                  "text": "NOCHE (P3)"
+                }
+              },
+              "type": "value"
+            }
           ],
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }, { "color": "green", "value": 1 }] }
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
         }
       },
-      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 1 },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 1
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "auto"
+      },
+      "title": "Fotoperiodo Activo",
+      "type": "stat",
+      "targets": [
+        {
+          "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"profile\") |> last()"
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ag4lg3qkktdz4b"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "unit": "cm",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 5
+              },
+              {
+                "color": "green",
+                "value": 15
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 1
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "textMode": "auto"
+      },
+      "title": "Nivel Tanque de Riego",
+      "type": "stat",
+      "targets": [
+        {
+          "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"nivel_tanque\") |> last()"
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ag4lg3qkktdz4b"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "semi-dark-blue",
+                  "text": "APAGADA"
+                },
+                "1": {
+                  "color": "green",
+                  "text": "REGANDO"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
       "id": 4,
-      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "textMode": "auto" },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "auto"
+      },
       "title": "Estado Bomba",
       "type": "stat",
-      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"bomba\") |> last()" }]
+      "targets": [
+        {
+          "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"bomba\") |> last()"
+        }
+      ]
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
       "id": 101,
-      "title": "🌿 AMBIENTE AÉREO Y RADIACIÓN FOTOSINTÉTICA (PAR)",
+      "title": "AMBIENTE A\u00c9REO Y RADIACI\u00d3N FOTOSINT\u00c9TICA (PAR)",
       "type": "row"
     },
     {
-      "datasource": { "type": "influxdb", "uid": "$datasource" },
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ag4lg3qkktdz4b"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "max": 50,
           "min": 0,
           "unit": "celsius",
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "blue", "value": null },
-              { "color": "green", "value": 18 },
-              { "color": "yellow", "value": 26 },
-              { "color": "red", "value": 32 }
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 18
+              },
+              {
+                "color": "yellow",
+                "value": 26
+              },
+              {
+                "color": "red",
+                "value": 32
+              }
             ]
           }
         }
       },
-      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 6 },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 6
+      },
       "id": 5,
-      "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
       "title": "Temperatura Ambiente Promedio",
       "type": "gauge",
-      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"temp1\" or r._field == \"temp2\")) |> mean()" }]
+      "targets": [
+        {
+          "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"temp1\" or r._field == \"temp2\")) |> mean()"
+        }
+      ]
     },
     {
-      "datasource": { "type": "influxdb", "uid": "$datasource" },
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ag4lg3qkktdz4b"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "max": 100,
           "min": 0,
           "unit": "percent",
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "red", "value": null },
-              { "color": "yellow", "value": 40 },
-              { "color": "green", "value": 55 },
-              { "color": "yellow", "value": 75 },
-              { "color": "red", "value": 85 }
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "green",
+                "value": 55
+              },
+              {
+                "color": "yellow",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
             ]
           }
         }
       },
-      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 6 },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 6,
+        "y": 6
+      },
       "id": 6,
-      "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
       "title": "Humedad Relativa Aire",
       "type": "gauge",
-      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"hum1\" or r._field == \"hum2\")) |> mean()" }]
+      "targets": [
+        {
+          "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field == \"hum1\" or r._field == \"hum2\")) |> mean()"
+        }
+      ]
     },
     {
-      "datasource": { "type": "influxdb", "uid": "$datasource" },
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ag4lg3qkktdz4b"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "thresholds" },
-          "custom": { "thresholdsStyle": { "mode": "area" } },
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
           "max": 1500,
           "min": 0,
-          "unit": "µmol/m²s",
+          "unit": "\u00b5mol/m\u00b2s",
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "blue", "value": null },
-              { "color": "yellow", "value": 150 },
-              { "color": "green", "value": 350 },
-              { "color": "orange", "value": 700 },
-              { "color": "red", "value": 1000 }
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 150
+              },
+              {
+                "color": "green",
+                "value": 350
+              },
+              {
+                "color": "orange",
+                "value": 700
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
             ]
           }
         }
       },
-      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 6 },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 12,
+        "y": 6
+      },
       "id": 7,
       "options": {
         "orientation": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"] },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
         "showThresholdLabels": true,
         "showThresholdMarkers": true
       },
-      "title": "☀️ Radiación Fotosintética Activa (PAR / PPFD)",
+      "title": "\ufe0f Radiaci\u00f3n Fotosint\u00e9tica Activa (PAR / PPFD)",
       "type": "gauge",
-      "description": "Flujo de fotones fotosintéticamente activos (400-700nm) para optimizar absorción clorofílica.",
-      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"par\") |> last()" }]
+      "description": "Flujo de fotones fotosint\u00e9ticamente activos (400-700nm) para optimizar absorci\u00f3n clorof\u00edlica.",
+      "targets": [
+        {
+          "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"par\") |> last()"
+        }
+      ]
     },
     {
-      "datasource": { "type": "influxdb", "uid": "$datasource" },
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ag4lg3qkktdz4b"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "max": 2000,
           "min": 0,
           "unit": "ppm",
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "yellow", "value": null },
-              { "color": "green", "value": 400 },
-              { "color": "orange", "value": 1000 },
-              { "color": "red", "value": 1500 }
+              {
+                "color": "yellow",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 400
+              },
+              {
+                "color": "orange",
+                "value": 1000
+              },
+              {
+                "color": "red",
+                "value": 1500
+              }
             ]
           }
         }
       },
-      "gridPos": { "h": 7, "w": 6, "x": 18, "y": 6 },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 6
+      },
       "id": 8,
-      "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
-      "title": "Dióxido de Carbono (CO₂)",
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "title": "Di\u00f3xido de Carbono (CO\u2082)",
       "type": "gauge",
-      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"co2\") |> last()" }]
+      "targets": [
+        {
+          "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field == \"co2\") |> last()"
+        }
+      ]
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 13 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
       "id": 102,
-      "title": "🌱 SUELO, SUSTRATO Y NUTRIENTES (SENSORES S1 - S6)",
+      "title": "SUELO, SUSTRATO Y NUTRIENTES (SENSORES S1 - S6)",
       "type": "row"
     },
     {
-      "datasource": { "type": "influxdb", "uid": "$datasource" },
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ag4lg3qkktdz4b"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": { "axisCenteredZero": false, "axisColorMode": "text", "drawStyle": "line", "lineInterpolation": "smooth" },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "drawStyle": "line",
+            "lineInterpolation": "smooth"
+          },
           "unit": "percent"
         }
       },
-      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 14 },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
       "id": 9,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
-      "title": "Humedad en Sustrato (Plantas S1 - S6)",
-      "type": "timeseries",
-      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field =~ /hum_suelo[1-6]/)" }]
-    },
-    {
-      "datasource": { "type": "influxdb", "uid": "$datasource" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": { "axisCenteredZero": false, "drawStyle": "line", "lineInterpolation": "smooth" },
-          "unit": "µS/cm"
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
         }
       },
-      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 14 },
-      "id": 10,
-      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
-      "title": "Conductividad Eléctrica (EC) y pH",
+      "title": "Humedad en Sustrato (Plantas S1 - S6)",
       "type": "timeseries",
-      "targets": [{ "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field =~ /ec_suelo[1-6]/ or r._field =~ /ph_suelo[1-6]/))" }]
+      "targets": [
+        {
+          "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and r._field =~ /hum_suelo[1-6]/)"
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "ag4lg3qkktdz4b"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "drawStyle": "line",
+            "lineInterpolation": "smooth"
+          },
+          "unit": "\u00b5S/cm"
+        }
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "title": "Conductividad El\u00e9ctrica (EC) y pH",
+      "type": "timeseries",
+      "targets": [
+        {
+          "query": "from(bucket: \"${bucket}\") |> range(start: v.timeRangeStart) |> filter(fn: (r) => r._measurement == \"sensors\" and (r._field =~ /ec_suelo[1-6]/ or r._field =~ /ph_suelo[1-6]/))"
+        }
+      ]
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 21 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
       "id": 104,
-      "title": "🎛️ PANEL DE CONTROL INTERACTIVO Y SETPOINTS (ACTUADORES)",
+      "title": "\ufe0f PANEL DE CONTROL INTERACTIVO Y SETPOINTS (ACTUADORES)",
       "type": "row"
     },
     {
-      "gridPos": { "h": 13, "w": 24, "x": 0, "y": 22 },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
       "id": 12,
       "options": {
-        "content": "<div style=\"background:#161b22; border-radius:12px; border:1px solid #30363d; padding:20px; color:#c9d1d9; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;\">\n  <div style=\"display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid #30363d; padding-bottom:12px;\">\n    <h3 style=\"margin:0; color:#58a6ff; font-size:18px;\">⚙️ Control Manual y Calibración de Setpoints</h3>\n    <a href=\"http://localhost:1880/ui\" target=\"_blank\" style=\"background:#238636; color:#fff; padding:6px 14px; border-radius:6px; text-decoration:none; font-weight:600; font-size:13px;\">Abrir Consola Node-RED ↗</a>\n  </div>\n\n  <div style=\"display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px;\">\n    <!-- Columna Iluminación -->\n    <div style=\"background:#0d1117; padding:16px; border-radius:8px; border:1px solid #21262d;\">\n      <h4 style=\"margin:0 0 12px 0; color:#f0883e;\">💡 Iluminación Espectral (PWM 0-255)</h4>\n      \n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">🔴 LED Rojo (R): <span id=\"val-r\">120</span></label>\n      <input type=\"range\" id=\"slider-r\" min=\"0\" max=\"255\" value=\"120\" style=\"width:100%; accent-color:#f85149; margin-bottom:12px;\" oninput=\"document.getElementById('val-r').innerText = this.value\">\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">🟢 LED Verde (G): <span id=\"val-g\">80</span></label>\n      <input type=\"range\" id=\"slider-g\" min=\"0\" max=\"255\" value=\"80\" style=\"width:100%; accent-color:#56d364; margin-bottom:12px;\" oninput=\"document.getElementById('val-g').innerText = this.value\">\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">🔵 LED Azul (B): <span id=\"val-b\">150</span></label>\n      <input type=\"range\" id=\"slider-b\" min=\"0\" max=\"255\" value=\"150\" style=\"width:100%; accent-color:#58a6ff; margin-bottom:12px;\" oninput=\"document.getElementById('val-b').innerText = this.value\">\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">🟣 LED UV: <span id=\"val-uv\">30</span></label>\n      <input type=\"range\" id=\"slider-uv\" min=\"0\" max=\"255\" value=\"30\" style=\"width:100%; accent-color:#bc8cff; margin-bottom:12px;\" oninput=\"document.getElementById('val-uv').innerText = this.value\">\n\n      <div style=\"display:flex; gap:10px; margin-top:8px;\">\n        <button onclick=\"document.getElementById('slider-r').value=255; document.getElementById('slider-g').value=255; document.getElementById('slider-b').value=255; document.getElementById('slider-uv').value=255; document.getElementById('val-r').innerText='255'; document.getElementById('val-g').innerText='255'; document.getElementById('val-b').innerText='255'; document.getElementById('val-uv').innerText='255';\" style=\"background:#30363d; border:none; color:#c9d1d9; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px;\">Max Luz</button>\n        <button onclick=\"document.getElementById('slider-r').value=0; document.getElementById('slider-g').value=0; document.getElementById('slider-b').value=0; document.getElementById('slider-uv').value=0; document.getElementById('val-r').innerText='0'; document.getElementById('val-g').innerText='0'; document.getElementById('val-b').innerText='0'; document.getElementById('val-uv').innerText='0';\" style=\"background:#30363d; border:none; color:#c9d1d9; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px;\">Apagar Todo</button>\n      </div>\n    </div>\n\n    <!-- Columna Ambiente -->\n    <div style=\"background:#0d1117; padding:16px; border-radius:8px; border:1px solid #21262d;\">\n      <h4 style=\"margin:0 0 12px 0; color:#7ee787;\">🌡️ Setpoints de Climatización</h4>\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">Temp Mínima (°C): <span id=\"val-tmin\">18</span>°C</label>\n      <input type=\"range\" id=\"slider-tmin\" min=\"10\" max=\"35\" value=\"18\" style=\"width:100%; accent-color:#58a6ff; margin-bottom:12px;\" oninput=\"document.getElementById('val-tmin').innerText = this.value\">\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">Temp Máxima (°C): <span id=\"val-tmax\">26</span>°C</label>\n      <input type=\"range\" id=\"slider-tmax\" min=\"15\" max=\"45\" value=\"26\" style=\"width:100%; accent-color:#f85149; margin-bottom:12px;\" oninput=\"document.getElementById('val-tmax').innerText = this.value\">\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">Humedad Aire Mín / Máx (%): <span id=\"val-hmin\">50</span>% - <span id=\"val-hmax\">80</span>%</label>\n      <div style=\"display:flex; gap:10px; margin-bottom:12px;\">\n        <input type=\"range\" id=\"slider-hmin\" min=\"20\" max=\"70\" value=\"50\" style=\"width:50%; accent-color:#79c0ff;\" oninput=\"document.getElementById('val-hmin').innerText = this.value\">\n        <input type=\"range\" id=\"slider-hmax\" min=\"60\" max=\"95\" value=\"80\" style=\"width:50%; accent-color:#79c0ff;\" oninput=\"document.getElementById('val-hmax').innerText = this.value\">\n      </div>\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">Humedad Suelo Riego (Min / Max): <span id=\"val-smin\">30</span>% - <span id=\"val-smax\">60</span>%</label>\n      <div style=\"display:flex; gap:10px;\">\n        <input type=\"range\" id=\"slider-smin\" min=\"10\" max=\"50\" value=\"30\" style=\"width:50%; accent-color:#56d364;\" oninput=\"document.getElementById('val-smin').innerText = this.value\">\n        <input type=\"range\" id=\"slider-smax\" min=\"40\" max=\"90\" value=\"60\" style=\"width:50%; accent-color:#56d364;\" oninput=\"document.getElementById('val-smax').innerText = this.value\">\n      </div>\n    </div>\n\n    <!-- Columna Acciones -->\n    <div style=\"background:#0d1117; padding:16px; border-radius:8px; border:1px solid #21262d; display:flex; flex-direction:column; justify-content:space-between;\">\n      <div>\n        <h4 style=\"margin:0 0 12px 0; color:#d2a8ff;\">🚀 Control del Experimento</h4>\n        <p style=\"font-size:12px; color:#8b949e; line-height:1.4;\">Envía órdenes al ESP32 a través de MQTT y Node-RED. Los cambios se persisten de inmediato en la Raspberry Pi.</p>\n        \n        <label style=\"display:block; font-size:12px; margin-bottom:6px;\">Nombre del Experimento:</label>\n        <input type=\"text\" id=\"exp-name\" value=\"Cultivo-Prueba-1\" style=\"width:100%; background:#161b22; border:1px solid #30363d; border-radius:6px; color:#fff; padding:6px 10px; margin-bottom:14px; box-sizing:border-box;\">\n      </div>\n\n      <div style=\"display:flex; flex-direction:column; gap:10px;\">\n        <button onclick=\"alert('✅ Setpoints transmitidos con éxito a la cámara');\" style=\"background:#1f6feb; border:none; color:#fff; padding:10px; border-radius:6px; font-weight:600; cursor:pointer;\">💾 Guardar y Aplicar Setpoints</button>\n        <div style=\"display:flex; gap:10px;\">\n          <button onclick=\"alert('▶ Experimento iniciado');\" style=\"flex:1; background:#238636; border:none; color:#fff; padding:10px; border-radius:6px; font-weight:600; cursor:pointer;\">▶ Iniciar</button>\n          <button onclick=\"alert('⏹ Experimento detenido');\" style=\"flex:1; background:#da3633; border:none; color:#fff; padding:10px; border-radius:6px; font-weight:600; cursor:pointer;\">⏹ Detener</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>",
+        "content": "<div style=\"background:#161b22; border-radius:12px; border:1px solid #30363d; padding:20px; color:#c9d1d9; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;\">\n  <div style=\"display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid #30363d; padding-bottom:12px;\">\n    <h3 style=\"margin:0; color:#58a6ff; font-size:18px;\">\ufe0f Control Manual y Calibraci\u00f3n de Setpoints</h3>\n    <a href=\"http://localhost:1880/ui\" target=\"_blank\" style=\"background:#238636; color:#fff; padding:6px 14px; border-radius:6px; text-decoration:none; font-weight:600; font-size:13px;\">Abrir Consola Node-RED \u2197</a>\n  </div>\n\n  <div style=\"display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px;\">\n    <!-- Columna Iluminaci\u00f3n -->\n    <div style=\"background:#0d1117; padding:16px; border-radius:8px; border:1px solid #21262d;\">\n      <h4 style=\"margin:0 0 12px 0; color:#f0883e;\">Iluminaci\u00f3n Espectral (PWM 0-255)</h4>\n      \n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">LED Rojo (R): <span id=\"val-r\">120</span></label>\n      <input type=\"range\" id=\"slider-r\" min=\"0\" max=\"255\" value=\"120\" style=\"width:100%; accent-color:#f85149; margin-bottom:12px;\" oninput=\"document.getElementById('val-r').innerText = this.value\">\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">LED Verde (G): <span id=\"val-g\">80</span></label>\n      <input type=\"range\" id=\"slider-g\" min=\"0\" max=\"255\" value=\"80\" style=\"width:100%; accent-color:#56d364; margin-bottom:12px;\" oninput=\"document.getElementById('val-g').innerText = this.value\">\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">LED Azul (B): <span id=\"val-b\">150</span></label>\n      <input type=\"range\" id=\"slider-b\" min=\"0\" max=\"255\" value=\"150\" style=\"width:100%; accent-color:#58a6ff; margin-bottom:12px;\" oninput=\"document.getElementById('val-b').innerText = this.value\">\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">LED UV: <span id=\"val-uv\">30</span></label>\n      <input type=\"range\" id=\"slider-uv\" min=\"0\" max=\"255\" value=\"30\" style=\"width:100%; accent-color:#bc8cff; margin-bottom:12px;\" oninput=\"document.getElementById('val-uv').innerText = this.value\">\n\n      <div style=\"display:flex; gap:10px; margin-top:8px;\">\n        <button onclick=\"document.getElementById('slider-r').value=255; document.getElementById('slider-g').value=255; document.getElementById('slider-b').value=255; document.getElementById('slider-uv').value=255; document.getElementById('val-r').innerText='255'; document.getElementById('val-g').innerText='255'; document.getElementById('val-b').innerText='255'; document.getElementById('val-uv').innerText='255';\" style=\"background:#30363d; border:none; color:#c9d1d9; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px;\">Max Luz</button>\n        <button onclick=\"document.getElementById('slider-r').value=0; document.getElementById('slider-g').value=0; document.getElementById('slider-b').value=0; document.getElementById('slider-uv').value=0; document.getElementById('val-r').innerText='0'; document.getElementById('val-g').innerText='0'; document.getElementById('val-b').innerText='0'; document.getElementById('val-uv').innerText='0';\" style=\"background:#30363d; border:none; color:#c9d1d9; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px;\">Apagar Todo</button>\n      </div>\n    </div>\n\n    <!-- Columna Ambiente -->\n    <div style=\"background:#0d1117; padding:16px; border-radius:8px; border:1px solid #21262d;\">\n      <h4 style=\"margin:0 0 12px 0; color:#7ee787;\">\ufe0f Setpoints de Climatizaci\u00f3n</h4>\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">Temp M\u00ednima (\u00b0C): <span id=\"val-tmin\">18</span>\u00b0C</label>\n      <input type=\"range\" id=\"slider-tmin\" min=\"10\" max=\"35\" value=\"18\" style=\"width:100%; accent-color:#58a6ff; margin-bottom:12px;\" oninput=\"document.getElementById('val-tmin').innerText = this.value\">\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">Temp M\u00e1xima (\u00b0C): <span id=\"val-tmax\">26</span>\u00b0C</label>\n      <input type=\"range\" id=\"slider-tmax\" min=\"15\" max=\"45\" value=\"26\" style=\"width:100%; accent-color:#f85149; margin-bottom:12px;\" oninput=\"document.getElementById('val-tmax').innerText = this.value\">\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">Humedad Aire M\u00edn / M\u00e1x (%): <span id=\"val-hmin\">50</span>% - <span id=\"val-hmax\">80</span>%</label>\n      <div style=\"display:flex; gap:10px; margin-bottom:12px;\">\n        <input type=\"range\" id=\"slider-hmin\" min=\"20\" max=\"70\" value=\"50\" style=\"width:50%; accent-color:#79c0ff;\" oninput=\"document.getElementById('val-hmin').innerText = this.value\">\n        <input type=\"range\" id=\"slider-hmax\" min=\"60\" max=\"95\" value=\"80\" style=\"width:50%; accent-color:#79c0ff;\" oninput=\"document.getElementById('val-hmax').innerText = this.value\">\n      </div>\n\n      <label style=\"display:block; font-size:12px; margin-bottom:4px;\">Humedad Suelo Riego (Min / Max): <span id=\"val-smin\">30</span>% - <span id=\"val-smax\">60</span>%</label>\n      <div style=\"display:flex; gap:10px;\">\n        <input type=\"range\" id=\"slider-smin\" min=\"10\" max=\"50\" value=\"30\" style=\"width:50%; accent-color:#56d364;\" oninput=\"document.getElementById('val-smin').innerText = this.value\">\n        <input type=\"range\" id=\"slider-smax\" min=\"40\" max=\"90\" value=\"60\" style=\"width:50%; accent-color:#56d364;\" oninput=\"document.getElementById('val-smax').innerText = this.value\">\n      </div>\n    </div>\n\n    <!-- Columna Acciones -->\n    <div style=\"background:#0d1117; padding:16px; border-radius:8px; border:1px solid #21262d; display:flex; flex-direction:column; justify-content:space-between;\">\n      <div>\n        <h4 style=\"margin:0 0 12px 0; color:#d2a8ff;\">Control del Experimento</h4>\n        <p style=\"font-size:12px; color:#8b949e; line-height:1.4;\">Env\u00eda \u00f3rdenes al ESP32 a trav\u00e9s de MQTT y Node-RED. Los cambios se persisten de inmediato en la Raspberry Pi.</p>\n        \n        <label style=\"display:block; font-size:12px; margin-bottom:6px;\">Nombre del Experimento:</label>\n        <input type=\"text\" id=\"exp-name\" value=\"Cultivo-Prueba-1\" style=\"width:100%; background:#161b22; border:1px solid #30363d; border-radius:6px; color:#fff; padding:6px 10px; margin-bottom:14px; box-sizing:border-box;\">\n      </div>\n\n      <div style=\"display:flex; flex-direction:column; gap:10px;\">\n        <button onclick=\"var sp={ledr:parseInt(document.getElementById('slider-r').value),ledg:parseInt(document.getElementById('slider-g').value),ledb:parseInt(document.getElementById('slider-b').value),leduv:parseInt(document.getElementById('slider-uv').value),temp_min:parseFloat(document.getElementById('slider-tmin').value),temp_max:parseFloat(document.getElementById('slider-tmax').value),hum_min:parseFloat(document.getElementById('slider-hmin').value),hum_max:parseFloat(document.getElementById('slider-hmax').value),hum_suelo_min:parseFloat(document.getElementById('slider-smin').value),hum_suelo_max:parseFloat(document.getElementById('slider-smax').value)}; fetch('http://'+window.location.hostname+':8083/api/sp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(sp)}).then(r=>r.json()).then(d=>alert('Setpoints transmitidos y aplicados con \u00e9xito')).catch(e=>alert('Error: '+e));\" style=\"background:#1f6feb; border:none; color:#fff; padding:10px; border-radius:6px; font-weight:600; cursor:pointer;\">Guardar y Aplicar Setpoints</button>\n        <div style=\"display:flex; gap:10px;\">\n          <button onclick=\"var n=document.getElementById('exp-name').value; fetch('http://'+window.location.hostname+':8083/api/start?name='+encodeURIComponent(n)).then(r=>r.json()).then(d=>alert('Experimento iniciado: '+n)).catch(e=>alert('Error: '+e));\" style=\"flex:1; background:#238636; border:none; color:#fff; padding:10px; border-radius:6px; font-weight:600; cursor:pointer;\">Iniciar</button>\n          <button onclick=\"fetch('http://'+window.location.hostname+':8083/api/stop').then(r=>r.json()).then(d=>alert('Experimento detenido')).catch(e=>alert('Error: '+e));\" style=\"flex:1; background:#da3633; border:none; color:#fff; padding:10px; border-radius:6px; font-weight:600; cursor:pointer;\">Detener</button>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>",
         "mode": "html"
       },
-      "title": "Sliders de Control y Parámetros",
+      "title": "Sliders de Control y Par\u00e1metros",
       "type": "text"
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 36 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
       "id": 103,
-      "title": "📹 CÁMARA Y VIDEO EN TIEMPO REAL (RTMP / HLS)",
+      "title": "C\u00c1MARA Y VIDEO EN TIEMPO REAL (RTMP / HLS)",
       "type": "row"
     },
     {
-      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 37 },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
       "id": 11,
       "options": {
-        "content": "<div style=\"width:100%; height:100%; min-height:450px; background:#0d1117; border-radius:12px; border:1px solid #30363d; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center;\">\n  <div style=\"width:100%; padding:10px 16px; background:#161b22; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #30363d;\">\n    <span style=\"color:#58a6ff; font-weight:600; font-size:14px;\">🔴 Transmisión en Vivo - Módulo 1</span>\n    <span style=\"color:#8b949e; font-size:12px;\">Formato HLS Ultra Low Latency (RTMP Ingest)</span>\n  </div>\n  <iframe src=\"http://localhost:8080/?token=m1\" style=\"width:100%; height:450px; border:none;\" allow=\"autoplay; fullscreen\"></iframe>\n</div>",
+        "content": "<div style=\"width:100%; height:100%; min-height:480px; background:#0d1117; border-radius:12px; border:1px solid #30363d; overflow:hidden; display:flex; flex-direction:column;\">\n  <div style=\"width:100%; padding:10px 16px; background:#161b22; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #30363d;\">\n    <span style=\"color:#58a6ff; font-weight:600; font-size:14px;\">Transmisi\u00f3n en Vivo - M\u00f3dulo 1 (Logitech C270)</span>\n    <span style=\"color:#3fb950; font-size:12px; font-weight:600;\">EN DIRECTO (Latencia Cero &lt;100ms)</span>\n  </div>\n  <div style=\"flex:1; width:100%; background:#000; display:flex; justify-content:center; align-items:center; position:relative; min-height:420px;\">\n    <img id=\"live-camera-feed\" style=\"max-width:100%; max-height:450px; width:auto; height:auto; object-fit:contain; border-radius:4px;\" alt=\"Video en Vivo\">\n  </div>\n</div>\n<script>\n  (function() {\n    var img = document.getElementById('live-camera-feed');\n    if (img) {\n      var host = window.location.hostname;\n      img.src = 'http://' + host + ':8082/stream.mjpg';\n    }\n  })();\n</script>",
         "mode": "html"
       },
-      "title": "Streaming de Cámara RGB",
+      "title": "Streaming de C\u00e1mara RGB",
       "type": "text"
     }
   ],
   "refresh": "5s",
   "schemaVersion": 39,
-  "tags": ["sise", "camara-crecimiento", "iot", "biotecnologia"],
+  "tags": [
+    "sise",
+    "camara-crecimiento",
+    "iot",
+    "biotecnologia"
+  ],
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": "InfluxDB",
+          "value": "ag4lg3qkktdz4b"
+        },
         "hide": 0,
         "includeAll": false,
         "label": "Fuente de Datos",
@@ -318,7 +711,10 @@
           "text": "camara-crecimiento",
           "value": "camara-crecimiento"
         },
-        "datasource": { "type": "influxdb", "uid": "$datasource" },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "$datasource"
+        },
         "definition": "buckets() |> filter(fn: (r) => not (r.name =~ /^_/)) |> keep(columns: [\"name\"]) |> rename(columns: {name: \"_value\"})",
         "hide": 0,
         "includeAll": false,
@@ -341,9 +737,20 @@
       }
     ]
   },
-  "time": { "from": "now-3h", "to": "now" },
-  "timepicker": { "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"] },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m"
+    ]
+  },
   "timezone": "browser",
-  "title": "Cámara de Crecimiento SISE - Monitoreo & Control",
+  "title": "C\u00e1mara de Crecimiento SISE - Monitoreo & Control",
   "uid": "sise-camara-crecimiento"
 }

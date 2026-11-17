@@ -38,29 +38,22 @@ class SerialHandler:
         self.tick_interval = tick_interval
 
     def _read_line(self, ser: serial.Serial, timeout: float) -> str:
-        """Lee una línea terminada en \\n con timeout."""
-        deadline = time.time() + timeout
-        buf = bytearray()
-
-        while time.time() < deadline:
-            if ser.in_waiting > 0:
-                chunk = ser.read(ser.in_waiting)
-                if not chunk:
-                    continue
-                for b in chunk:
-                    if b == 10:  # '\\n'
-                        return buf.decode("utf-8", errors="replace").strip()
-                    buf.append(b)
-            else:
-                time.sleep(0.01)
-
-        raise TimeoutError("Serial read timeout")
+        ser.timeout = timeout
+        line = ser.readline()
+        if not line:
+            raise TimeoutError("Serial read timeout")
+        return line.decode("utf-8", errors="replace").strip()
 
     def run_session(self, stop_event: threading.Event) -> None:
         """Maneja una sesión de conexión activa con el puerto serie."""
         logger.info("Abriendo puerto serie %s a %d baudios", self.port, self.baudrate)
         with serial.Serial(self.port, self.baudrate, timeout=1.0) as ser:
-            time.sleep(2.0)
+            try:
+                ser.setDTR(False)
+                ser.setRTS(False)
+            except Exception:
+                pass
+            time.sleep(1.0)
             ser.reset_input_buffer()
 
             prev_running = self.running_event.is_set()

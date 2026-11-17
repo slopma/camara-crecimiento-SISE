@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="width:100%; height:100%; margin:0; padding:0; overflow:hidden;">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles.css">
-    <title>Live Camera</title>
+    <title>Cámara de Crecimiento SISE - En Vivo</title>
   </head>
-  <body>
-    <video id="live-stream" autoplay></video>
+  <body style="width:100%; height:100%; margin:0; padding:0; background:#000; overflow:hidden; display:flex; justify-content:center; align-items:center;">
+    <video id="live-stream" autoplay muted playsinline controls style="width:100%; height:100%; object-fit:contain;"></video>
 
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script src="./index.js"></script>
